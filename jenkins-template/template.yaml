@@ -1,0 +1,58 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: jenkins-argocd
+  title: Jenkins Instance Template
+spec:
+  owner: mohamedrafraf
+  type: service
+
+  parameters:
+    - title: Provide metadata
+      required:
+        - serviceName
+        - owner
+      properties:
+        serviceName:
+          title: Service Name
+          type: string
+          description: Unique name of the component
+          ui:field: EntityNamePicker
+        owner:
+          title: Owner
+          type: string
+          description: Owner of the component
+          ui:field: OwnerPicker
+          ui:options:
+            allowedKinds:
+              - Group
+    - title: Choose a location
+      required:
+        - repoUrl
+      properties:
+        repoUrl:
+          title: Repository Location
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+
+  steps:
+    - id: argocd-create
+      name: Create ArgoCD Application
+      action: argocd:create-helm-application
+      input:
+        name: ${{ parameters.serviceName }}
+        namespace: ${{ parameters.serviceName }}
+        chart:
+          repo: https://charts.jenkins.io
+          name: jenkins/jenkins
+          version: latest
+
+    - id: register
+      name: Register
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: '/catalog-info.yaml'
