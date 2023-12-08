@@ -54,5 +54,5 @@ spec:
       name: Register
       action: catalog:register
       input:
-        repoContentsUrl: https://github.com/KubeNoOps/backstage-templates
-        catalogInfoPath: 'jenkins-template/catalog-info.yaml'
+        repoContentsUrl: https://github.com/KubeNoOps/backstage-templates/blob/main/jenkins-template/
+        catalogInfoPath: 'catalog-info.yaml'
