@@ -11,12 +11,18 @@ spec:
     - title: Provide metadata
       required:
         - serviceName
+        - namespace
         - owner
       properties:
         serviceName:
           title: Service Name
           type: string
           description: Unique name of the component
+          ui:field: EntityNamePicker
+        namespace:
+          title: Namespace
+          type: string
+          description: The Namespace of Jenkins instance
           ui:field: EntityNamePicker
         owner:
           title: Owner
@@ -68,7 +74,7 @@ spec:
       action: argocd:create-helm-application
       input:
         name: ${{ parameters.serviceName }}
-        namespace: ${{ parameters.serviceName }}
+        namespace: ${{ parameters.namespace }}
         chart:
           repo: https://charts.jenkins.io
           name: jenkins/jenkins
