@@ -3,10 +3,11 @@ kind: Template
 metadata:
   name: node-template
   title: Node Application Template
+  description: Create Node App followed by github actions that create container image and publish it on the github repository as well as helm chart package
+
 spec:
   owner: mohamed-rafraf/kubenoops
   type: service
-  description: Create Node App followed by github actions that create container image and publish it on the github repository as well as helm chart package
   parameters:
     - title: Provide metadata
       required:
