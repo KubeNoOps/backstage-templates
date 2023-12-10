@@ -39,6 +39,30 @@ spec:
               - github.com
 
   steps:
+
+    - id: fetch-base
+      name: Fetch Base
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          serviceName: ${{ parameters.serviceName }}
+          owner: ${{ parameters.owner }}
+          githubRepositoryOrg: ${{ (parameters.repoUrl | parseRepoUrl).owner }}
+          githubRepositoryName: ${{ (parameters.repoUrl | parseRepoUrl).repo }}
+
+    - id: publish
+      name: Publish
+      action: publish:github
+      input:
+        allowedHosts: ['github.com']
+        description: This is ${{ parameters.serviceName }}
+        repoUrl: ${{ parameters.repoUrl }}
+        repoVisibility: public
+        defaultBranch: main
+        protectDefaultBranch: false
+        requireCodeOwnerReviews: false
+
     - id: argocd-create
       name: Create ArgoCD Application
       action: argocd:create-helm-application
